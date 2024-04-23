@@ -280,10 +280,22 @@ class Game:
                         self.game_active = True
                         self.main_game()
                     if next_character_button.check_for_input(menu_mouse_pos):
-                        player_stand = pygame.image.load('graphics/player/fly_3.png').convert_alpha()
+                        self.character = (self.character + 1) % 2
+                        self.player.sprite.change_character(self.character)
+                        if self.character == 0:
+                            player_stand = pygame.image.load('graphics/player/intro.png').convert_alpha()
+                        else:
+                            player_stand = pygame.image.load('graphics/coin/Coin0.png').convert_alpha()
                         player_stand = pygame.transform.rotozoom(player_stand, 0, 0.45)
-                        player_stand = player_stand.copy()  # Make a copy of the image
-                        player_stand.fill(self.player_color + (255,), None, pygame.BLEND_RGBA_MULT)
+                        player_stand_rect = player_stand.get_rect(center=(400, 150))
+                    if prev_character_button.check_for_input(menu_mouse_pos):
+                        self.character = (self.character + 1) % 2
+                        self.player.sprite.change_character(self.character)
+                        if self.character == 0:
+                            player_stand = pygame.image.load('graphics/player/intro.png').convert_alpha()
+                        else:
+                            player_stand = pygame.image.load('graphics/coin/Coin0.png').convert_alpha()
+                        player_stand = pygame.transform.rotozoom(player_stand, 0, 0.45)
                         player_stand_rect = player_stand.get_rect(center=(400, 150))
                     if quit_button.check_for_input(menu_mouse_pos):
                         pygame.quit()

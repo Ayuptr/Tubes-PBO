@@ -8,8 +8,15 @@ class Player(pygame.sprite.Sprite):
     def __init__(self,character):
         super().__init__()
         self.player_frames = []
-        for i in range(1, 3):
-            self.player_frames.append(pygame.image.load('graphics/player/fly_{}.png'.format(i)).convert_alpha())
+        self.character = character
+        self.update_character()
+        if character == 0:
+            for i in range(1, 3):
+                self.player_frames.append(pygame.image.load('graphics/player/fly_{}.png'.format(i)).convert_alpha())
+        else:
+            for i in range(1, 12):
+                self.player_frames.append(pygame.image.load('graphics/coin/Coin{}.png'.format(i)).convert_alpha())
+        self.player_frames = [pygame.transform.smoothscale(image, (110, 75)) for image in self.player_frames]
         self.player_frames = [pygame.transform.smoothscale(image, (110, 75)) for image in self.player_frames]
         self.player_frame_index = 0
         self.player_shoot = []
@@ -110,3 +117,19 @@ class Player(pygame.sprite.Sprite):
         self.recharge()
         self.cheat()
         self.bullets.update()
+    def update_character(self):
+        self.player_frames = []
+        if self.character == 0:
+            for i in range(1, 3):
+                self.player_frames.append(pygame.image.load('graphics/player/fly_{}.png'.format(i)).convert_alpha())
+        else:
+            for i in range(1, 12):
+                self.player_frames.append(pygame.image.load('graphics/coin/Coin{}.png'.format(i)).convert_alpha())
+        self.player_frames = [pygame.transform.smoothscale(image, (110, 75)) for image in self.player_frames]
+        self.player_frame_index = 0
+        self.image = self.player_frames[self.player_frame_index]
+        self.rect = self.image.get_rect(midbottom=(200, (SCREEN_HEIGHT / 2)))
+        
+    def change_character(self, new_character):
+        self.character = new_character
+        self.update_character()
