@@ -1,8 +1,8 @@
 import pygame
 from bullet import Bullet
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 960
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,character):
@@ -11,19 +11,16 @@ class Player(pygame.sprite.Sprite):
         self.character = character
         self.update_character()
         if character == 0:
-            for i in range(1, 3):
-                self.player_frames.append(pygame.image.load('graphics/player/fly_{}.png'.format(i)).convert_alpha())
+            for i in range(1, 11):
+                self.player_frames.append(pygame.image.load('graphics/player/naga_1/{}.png'.format(i)).convert_alpha())
+        elif character == 1:
+            for i in range(1, 11):
+                self.player_frames.append(pygame.image.load('graphics/player/naga_2/{}.png'.format(i)).convert_alpha())
         else:
-            for i in range(1, 12):
-                self.player_frames.append(pygame.image.load('graphics/coin/Coin{}.png'.format(i)).convert_alpha())
-        self.player_frames = [pygame.transform.smoothscale(image, (110, 75)) for image in self.player_frames]
+            for i in range(1, 11):
+                self.player_frames.append(pygame.image.load('graphics/player/naga_3/{}.png'.format(i)).convert_alpha())
         self.player_frames = [pygame.transform.smoothscale(image, (110, 75)) for image in self.player_frames]
         self.player_frame_index = 0
-        self.player_shoot = []
-        for i in range(1, 6):
-            self.player_shoot.append(pygame.image.load('graphics/player/Shoot ({}).png'.format(i)).convert_alpha())
-        self.player_shoot = [pygame.transform.smoothscale(image, (110, 75)) for image in self.player_shoot]
-        self.player_shoot_index = 0
         
         self.image = self.player_frames[self.player_frame_index]
         self.rect = self.image.get_rect(midbottom = (200, (SCREEN_HEIGHT/2)))
@@ -36,8 +33,6 @@ class Player(pygame.sprite.Sprite):
         self.bullet_cooldown = 600
         self.indicator_active = False
 
-        self.shoot_sound = pygame.mixer.Sound('audio/shoot.wav')
-        self.shoot_sound.set_volume(0.3)
         self.bullets = pygame.sprite.Group()
 
     def player_input(self):
@@ -51,20 +46,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.move_ip(-5, 0)
         if keys[pygame.K_d]:
             self.rect.move_ip(5, 0)
-        # menggecek kemampuan menembak dari player
-        if self.bullet_active:
-            self.indicator_active = True
-            if keys[pygame.K_SPACE] and self.ready:
-                self.shoot_bullet()
-                self.shoot_sound.play()
-                self.ready = False
-                self.bullet_time = pygame.time.get_ticks()
 
-    def cheat(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_i]:
-            self.bullet_active = True
-            self.active_time = pygame.time.get_ticks()
             
     # batasan pergerakan player di layar game
     def player_constraint(self):
@@ -79,52 +61,28 @@ class Player(pygame.sprite.Sprite):
 
     # animasi player saat terbang dan menembak
     def animation_state(self):
-        keys = pygame.key.get_pressed()
-        if self.bullet_active and keys[pygame.K_SPACE]:
-            self.player_shoot_index += 1
-            if self.player_shoot_index >= len(self.player_shoot):
-                self.player_shoot_index = 0
-            self.image = self.player_shoot[self.player_shoot_index]
-        else:
-            self.player_frame_index += 0.1
-            if self.player_frame_index >= len(self.player_frames):
-                self.player_frame_index = 0
-            self.image = self.player_frames[int(self.player_frame_index)]
-
-    # menonaktifkan kemampuan menembak
-    def deactivate(self):
-        bullet_current_time = pygame.time.get_ticks()
-        if bullet_current_time - self.active_time >= 5000:
-            self.bullet_active = False
-            self.indicator_active = False
-
-    # mengatur cooldown untuk menembak
-    def recharge(self):
-        if not self.ready:
-            current_time = pygame.time.get_ticks()
-            if current_time - self.bullet_time >= self.bullet_cooldown:
-                self.ready = True
-
-    # menembakkan bullet
-    def shoot_bullet(self):
-        self.bullets.add(Bullet(self.rect.center, 5))
+        self.player_frame_index += 0.1
+        if self.player_frame_index >= len(self.player_frames):
+            self.player_frame_index = 0
+        self.image = self.player_frames[int(self.player_frame_index)]
+            
 
     def update(self):
         self.player_input()
         self.player_constraint()
         self.animation_state()
-        self.deactivate()
-        self.recharge()
-        self.cheat()
-        self.bullets.update()
+
     def update_character(self):
         self.player_frames = []
         if self.character == 0:
-            for i in range(1, 3):
-                self.player_frames.append(pygame.image.load('graphics/player/fly_{}.png'.format(i)).convert_alpha())
+            for i in range(1, 11):
+                self.player_frames.append(pygame.image.load('graphics/player/naga_1/{}.png'.format(i)).convert_alpha())
+        elif self.character == 1:
+            for i in range(1, 11):
+                self.player_frames.append(pygame.image.load('graphics/player/naga_2/{}.png'.format(i)).convert_alpha())
         else:
-            for i in range(1, 12):
-                self.player_frames.append(pygame.image.load('graphics/coin/Coin{}.png'.format(i)).convert_alpha())
+            for i in range(1, 11):
+                self.player_frames.append(pygame.image.load('graphics/player/naga_3/{}.png'.format(i)).convert_alpha())
         self.player_frames = [pygame.transform.smoothscale(image, (110, 75)) for image in self.player_frames]
         self.player_frame_index = 0
         self.image = self.player_frames[self.player_frame_index]
