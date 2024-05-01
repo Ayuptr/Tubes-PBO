@@ -207,12 +207,12 @@ class Game:
     def main_menu(self):
         intro_music.play(-1)
         # tampilan untuk main menu
-        title_text = self.get_font(45).render('Aircraft: Fly Forever', True, ('#cb130d'))
+        title_text = self.get_font(45).render('DRAGON METEOR STORM', True, ('#cb130d'))
         title_rect = title_text.get_rect(center = (SCREEN_WIDTH/2, 200))
         menu_text = self.get_font(45).render("MAIN MENU", True, "Black")
         menu_rect = menu_text.get_rect(center=(SCREEN_WIDTH/2, 300))
-        copyright = self.get_font(35).render('Copyright © 2022 by Ganbaru Power', True, 'Black')
-        copyright_rect = copyright.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-100))
+        name_menu = self.get_font(35).render('GAME BY KELOMPOK 8', True, 'Black')
+        name_menu_rect = name_menu.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-100))
         player_stand = pygame.image.load('graphics/player/naga_1/1.png').convert_alpha()
         player_stand =  pygame.transform.rotozoom(player_stand, 0, 0.45)
         player_stand_rect = player_stand.get_rect(center = (SCREEN_WIDTH/2, SCREEN_HEIGHT-550))
@@ -237,7 +237,7 @@ class Game:
             screen.blit(title_text, title_rect)
             screen.blit(player_stand, player_stand_rect)
             screen.blit(menu_text, menu_rect)
-            screen.blit(copyright, copyright_rect)
+            screen.blit(name_menu, name_menu)
 
             # update button
             for button in [play_button, quit_button,next_character_button,prev_character_button]:
